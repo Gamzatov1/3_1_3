@@ -20,8 +20,6 @@ public class User implements UserDetails {
 
     private String password;
 
-    private String email;
-
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -34,7 +32,6 @@ public class User implements UserDetails {
     public User(String username, String password, String email) {
         this.username = username;
         this.password = password;
-        this.email = email;
     }
 
     public Long getId() {
@@ -100,7 +97,6 @@ public class User implements UserDetails {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
                 '}';
     }
 }
