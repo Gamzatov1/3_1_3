@@ -14,8 +14,15 @@
     </div>
     <br>
     <div>
-        <label for="surname">Enter password: </label>
-        <input type="text" th:field="*{password}" id="surname">
+        <label for="password">Enter password (leave empty to keep current): </label>
+        <input type="password" th:field="*{password}" id="password">
+    </div>
+    <div class="form-group">
+        <label for="roles">Role</label>
+        <select name="role" class="form-control form-control-sm" multiple id="roles" style="height: 40px;">
+            <option value="1" th:selected="${user.roles.?[name == 'ROLE_ADMIN'].size() > 0}">Admin</option>
+            <option value="2" th:selected="${user.roles.?[name == 'ROLE_USER'].size() > 0}">User</option>
+        </select>
     </div>
     <br>
     <input type="submit" value="Update"/>

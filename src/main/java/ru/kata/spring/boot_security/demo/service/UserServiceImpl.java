@@ -20,16 +20,16 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-@Transactional(readOnly=true)
 public class UserServiceImpl implements UserService, UserDetailsService {
 
-    private UserRepo userRepository;
+    private final UserRepo userRepository;
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+
 
     @Autowired
     @Lazy
-    public UserServiceImpl(UserRepo userRepository, RoleRepo roleRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepo userRepository, RoleRepo roleRepo, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -77,19 +77,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public void updateUser(Long id, User user) {
         User existingUser = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
+        existingUser.setUsername(user.getUsername());
+
         if (user.getPassword() != null && !user.getPassword().isEmpty()) {
             existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
         }
 
-        existingUser.setUsername(user.getUsername());
+        if (user.getRoles() != null) {
+            existingUser.setRoles(user.getRoles());
+        }
+
         userRepository.save(existingUser);
     }
-
 
     @Override
     @Transactional
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
+
+
 
 }
