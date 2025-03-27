@@ -18,7 +18,13 @@ public class User implements UserDetails {
 
     private String username;
 
+    private String lastName;
+
+    private Integer age;
+
     private String password;
+
+    private String email;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
@@ -29,9 +35,12 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String username, String password, String email) {
+    public User(String username, String lastName, Integer age, String password, String email) {
         this.username = username;
+        this.lastName = lastName;
+        this.age = age;
         this.password = password;
+        this.email = email;
     }
 
     public Long getId() {
@@ -65,6 +74,18 @@ public class User implements UserDetails {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+    public String getLastName() {return lastName;}
+
+    public void setLastName(String lastName) {this.lastName = lastName;}
+
+    public Integer getAge() {return age;}
+
+    public void setAge(Integer age) {this.age = age;}
+
+    public String getEmail() {return email;}
+
+    public void setEmail(String email) {this.email = email;}
 
     @Override
     public boolean isAccountNonExpired() {

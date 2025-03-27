@@ -22,36 +22,45 @@ public class AdminController {
     @GetMapping
     public String getUsers(Model model) {
         model.addAttribute("users", userService.allUsers());
+        model.addAttribute("user", userService.UserInfo());
+        model.addAttribute("editUser", new User());
         return "users";
     }
 
     @GetMapping(value = "/new")
     public String newUser(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("newUser", new User());
+        model.addAttribute("user", userService.UserInfo());
         return "newUser";
     }
 
     @PostMapping("/new")
-    public String createUser(@ModelAttribute User user, @RequestParam(value = "role") Set<Role> roles) {
+    public String createUser(@ModelAttribute("newUser") User user, @RequestParam(value = "role") Set<Role> roles) {
         userService.saveUser(userService.createUser(user, roles));
-        return "redirect:/admin/";
+        return "redirect:/admin";
     }
 
-    @GetMapping(value = "/edit")
-    public String edit(@RequestParam(value = "id") long id, Model model) {
-        model.addAttribute("user", userService.getOne(id));
-        return "editUser";
-    }
-
-    @PostMapping(value = "/update")
-    public String update(@ModelAttribute("user") User user, @RequestParam("id") Long id, @RequestParam(value = "role", required = false) Set<Role> roles) {
-        if (user.getPassword() != null && user.getPassword().trim().isEmpty()) {
-            user.setPassword(null);
+    @PostMapping("/update")
+    public String update(@ModelAttribute("user") User user, @RequestParam(value = "role", required = false) Set<Role> roles) {
+        User existingUser = userService.getOne(user.getId());
+        
+        // Update all fields
+        existingUser.setUsername(user.getUsername());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setAge(user.getAge());
+        existingUser.setEmail(user.getEmail());
+        
+        // Update password only if it's not empty
+        if (user.getPassword() != null && !user.getPassword().trim().isEmpty()) {
+            existingUser.setPassword(user.getPassword());
         }
+        
+        // Update roles if provided
         if (roles != null) {
-            user.setRoles(roles);
+            existingUser.setRoles(roles);
         }
-        userService.updateUser(id, user);
+        
+        userService.updateUser(existingUser.getId(), existingUser);
         return "redirect:/admin";
     }
 
