@@ -41,26 +41,14 @@ public class AdminController {
     }
 
     @PostMapping("/update")
-    public String update(@ModelAttribute("user") User user, @RequestParam(value = "role", required = false) Set<Role> roles) {
-        User existingUser = userService.getOne(user.getId());
-        
-        // Update all fields
-        existingUser.setUsername(user.getUsername());
-        existingUser.setLastName(user.getLastName());
-        existingUser.setAge(user.getAge());
-        existingUser.setEmail(user.getEmail());
-        
-        // Update password only if it's not empty
-        if (user.getPassword() != null && !user.getPassword().trim().isEmpty()) {
-            existingUser.setPassword(user.getPassword());
+    public String update(@ModelAttribute("user") User user, @RequestParam("id") Long id, @RequestParam(value = "role", required = false) Set<Role> roles) {
+        if (user.getPassword() != null && user.getPassword().trim().isEmpty()) {
+            user.setPassword(null);
         }
-        
-        // Update roles if provided
         if (roles != null) {
-            existingUser.setRoles(roles);
+            user.setRoles(roles);
         }
-        
-        userService.updateUser(existingUser.getId(), existingUser);
+        userService.updateUser(id, user);
         return "redirect:/admin";
     }
 

@@ -15,11 +15,11 @@ import java.util.Optional;
 @Component
 public class DataInit implements CommandLineRunner {
 
-    private UserRepo userRepository;
+    private final UserRepo userRepository;
 
-    private RoleRepo roleRepository;
+    private final RoleRepo roleRepository;
 
-    PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public DataInit(UserRepo userRepository, RoleRepo roleRepository, PasswordEncoder passwordEncoder) {

@@ -9,8 +9,12 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 @Controller
 public class UserController {
 
-    @Autowired
-    UserService userService;
+
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/user")
     public String userInfo(Model model) {
