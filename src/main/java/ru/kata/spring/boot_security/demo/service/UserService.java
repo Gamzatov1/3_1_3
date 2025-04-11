@@ -11,13 +11,13 @@ import java.util.Set;
 public interface UserService {
     List<User> allUsers();
 
-    void saveUser(User user);
+    User  saveUser(User user);
 
-    User createUser(User user, Set<Role> roles);
+    User  createUser(User user, Set<Role> roles);
 
     User getOne(long id);
 
-    void updateUser(Long id, User user);
+    User  updateUser(Long id, User user);
 
     void deleteUser(Long id);
 
