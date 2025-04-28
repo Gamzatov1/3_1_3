@@ -91,8 +91,10 @@
                                 <div class="mb-3">
                                     <label for="roles" class="form-label fw-bold">Role</label>
                                     <select name="role" class="form-select" multiple id="roles" size="2">
-                                        <option value="1">ADMIN</option>
-                                        <option value="2">USER</option>
+                                        <option th:each="role : ${allRoles}"
+                                                th:value="${role.id}"
+                                                th:text="${role.name.replace('ROLE_', '')}">
+                                        </option>
                                     </select>
                                 </div>
                                 <button type="submit" class="btn btn-success">Add new user</button>

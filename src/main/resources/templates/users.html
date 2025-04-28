@@ -160,8 +160,12 @@
                                                             <div class="mb-3">
                                                                 <label th:for="${'roles' + user.id}" class="form-label fw-bold">Role</label>
                                                                 <select name="role" class="form-select" multiple size="2" th:id="${'roles' + user.id}">
-                                                                    <option value="1" th:selected="${user.roles.?[name == 'ROLE_ADMIN'].size() > 0}">ADMIN</option>
-                                                                    <option value="2" th:selected="${user.roles.?[name == 'ROLE_USER'].size() > 0}">USER</option>
+                                                                    <!-- Dynamically generate options -->
+                                                                    <option th:each="role : ${allRoles}"
+                                                                            th:value="${role.id}"
+                                                                            th:text="${role.name.replace('ROLE_', '')}"
+                                                                            th:selected="${#lists.contains(user.roles.![id], role.id)}">
+                                                                    </option>
                                                                 </select>
                                                             </div>
                                                             

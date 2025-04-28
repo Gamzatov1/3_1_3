@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.util.Set;
@@ -13,10 +14,12 @@ import java.util.Set;
 @RequestMapping("/admin")
 public class AdminController {
 
-    private UserService userService;
+    private final UserService userService;
+    private final RoleService roleService;
 
-    public AdminController(UserService userService) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping
@@ -24,6 +27,7 @@ public class AdminController {
         model.addAttribute("users", userService.allUsers());
         model.addAttribute("user", userService.UserInfo());
         model.addAttribute("editUser", new User());
+        model.addAttribute("allRoles", roleService.findAll());
         return "users";
     }
 
@@ -31,6 +35,7 @@ public class AdminController {
     public String newUser(Model model) {
         model.addAttribute("newUser", new User());
         model.addAttribute("user", userService.UserInfo());
+        model.addAttribute("allRoles", roleService.findAll());
         return "newUser";
     }
 
